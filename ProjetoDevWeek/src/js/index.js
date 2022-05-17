@@ -1,23 +1,40 @@
-const personagens = document.querySelectorAll(".personagem");
+const fight = []
+const characterSelect = document.querySelectorAll(".personagem");
 
-personagens.forEach((personagem) => {
-  personagem.addEventListener("mouseenter", () => {
+characterSelect.forEach((character) => {
+  character.addEventListener("mouseenter", () => {
+    let playerNumber = fight.length+1
+    if(fight.length >= 2) return;
 
-    const idSelecionado = personagem.attributes.id.value;
+    const selectedId = character.attributes.id.value;
 
-    if(idSelecionado === 'ultron') return;
+    if(fight.length === 0) {
+      if(selectedId === 'ultron') return;
+      const personagemSelecionado = document.querySelector(".selecionado");
+      personagemSelecionado.classList.remove("selecionado");
+  
+      character.classList.add("selecionado");
+    }else if(fight.length === 1){
+      const personagemSelecionado = document.querySelector(".jogador-2-selecionado");
+      personagemSelecionado.classList.remove("jogador-2-selecionado");
+  
+      character.classList.add("jogador-2-selecionado");
+    }
 
-    const personagemSelecionado = document.querySelector(".selecionado");
-    personagemSelecionado.classList.remove("selecionado");
+    const characterImage = document.getElementById(`personagem-jogador-${playerNumber}`);
+    characterImage.src = `./src/images/${selectedId}.png`;
 
-    personagem.classList.add("selecionado");
-
-    const imagemJogador1 = document.getElementById('personagem-jogador-1');
-    imagemJogador1.src = `./src/images/${idSelecionado}.png`;
-
-    const nomeJogador1 = document.getElementById('nome-jogador-1');
-    const nomeSelecionado = personagem.getAttribute('data-name');
+    const characterName = document.getElementById(`nome-jogador-${playerNumber}`);
+    const selectedName = character.getAttribute('data-name');
     
-    nomeJogador1.innerHTML = nomeSelecionado;
+    characterName.innerHTML = selectedName;
   });
+
+  character.addEventListener("click", function(event){
+    let characterName = character.getAttribute('data-name');
+    if(fight.length >= 2) return;
+    
+    fight.push(characterName);
+  });
+
 });
